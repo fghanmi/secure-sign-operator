@@ -19,6 +19,7 @@ package fulcio
 import (
 	"context"
 	"errors"
+
 	olpredicate "github.com/operator-framework/operator-lib/predicate"
 	"github.com/securesign/operator/controllers/annotations"
 
@@ -91,6 +92,7 @@ func (r *FulcioReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 		actions.NewHandleCertAction(),
 		actions.NewRBACAction(),
 		actions.NewServerConfigAction(),
+		actions.NewConfigMapAction(),
 		actions.NewDeployAction(),
 		actions.NewCreateMonitorAction(),
 		actions.NewServiceAction(),
