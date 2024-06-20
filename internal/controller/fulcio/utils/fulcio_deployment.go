@@ -38,7 +38,13 @@ func CreateDeployment(instance *v1alpha1.Fulcio, deploymentName string, sa strin
 		"/var/run/fulcio-secrets/key.pem",
 		"--fileca-cert",
 		"/var/run/fulcio-secrets/cert.pem",
-		fmt.Sprintf("--ct-log-url=http://ctlog.%s.svc/trusted-artifact-signer", instance.Namespace)}
+	}
+
+	if instance.Spec.ExternalCtlog.Enabled {
+		args = append(args, fmt.Sprintf("--ct-log-url=%s", instance.Spec.ExternalCtlog.CtlogUrl))
+	} else {
+		args = append(args, fmt.Sprintf("--ct-log-url=http://ctlog.%s.svc/trusted-artifact-signer", instance.Namespace))
+	}
 
 	env := make([]corev1.EnvVar, 0)
 	env = append(env, corev1.EnvVar{

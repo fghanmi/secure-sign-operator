@@ -22,6 +22,7 @@ import (
 	olpredicate "github.com/operator-framework/operator-lib/predicate"
 	"github.com/securesign/operator/internal/controller/annotations"
 
+	routev1 "github.com/openshift/api/route/v1"
 	"github.com/securesign/operator/internal/controller/common/action"
 	actions2 "github.com/securesign/operator/internal/controller/trillian/actions"
 	"github.com/securesign/operator/internal/controller/trillian/actions/db"
@@ -90,6 +91,7 @@ func (r *TrillianReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 		logserver.NewDeployAction(),
 		logserver.NewCreateServiceAction(),
+		logserver.NewCreateRouteAction(),
 		logserver.NewCreateMonitorAction(),
 
 		logsigner.NewDeployAction(),
@@ -131,6 +133,7 @@ func (r *TrillianReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		WithEventFilter(pause).
 		For(&rhtasv1alpha1.Trillian{}).
+		Owns(&routev1.Route{}).
 		Owns(&v1.Deployment{}).
 		Owns(&v12.Service{}).
 		Complete(r)

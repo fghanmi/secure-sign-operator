@@ -11,6 +11,8 @@ import (
 type FulcioSpec struct {
 	// Define whether you want to export service or not
 	ExternalAccess ExternalAccess `json:"externalAccess,omitempty"`
+	// Define whether you want to use external CTlog service
+	ExternalCtlog ExternalCtlog `json:"externalCtlog,omitempty"`
 	// Fulcio Configuration
 	//+required
 	Config FulcioConfig `json:"config"`
@@ -21,6 +23,16 @@ type FulcioSpec struct {
 	// ConfigMap with additional bundle of trusted CA
 	//+optional
 	TrustedCA *LocalObjectReference `json:"trustedCA,omitempty"`
+}
+
+type ExternalCtlog struct {
+	// If set to true, the Operator will use external CTlog service for fulcio.
+	//+kubebuilder:validation:XValidation:rule=(self || !oldSelf),message=Feature cannot be disabled
+	//+kubebuilder:default:=false
+	Enabled bool `json:"enabled"`
+	// Set the external Ctlog.
+	//+optional
+	CtlogUrl string `json:"ctlogUrl,omitempty"`
 }
 
 // FulcioCert defines fields for system-generated certificate

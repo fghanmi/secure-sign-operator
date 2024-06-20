@@ -59,6 +59,23 @@ spec:
               ctlog:
                 description: CTlogSpec defines the desired state of CTlog component
                 properties:
+                  externalCtlog:
+                    description: Define whether you want to use external CTlog service
+                    properties:
+                      ctlogUrl:
+                        description: Set the external Ctlog.
+                        type: string
+                      enabled:
+                        default: false
+                        description: If set to true, the Operator will use external
+                          CTlog service for fulcio.
+                        type: boolean
+                        x-kubernetes-validations:
+                        - message: Feature cannot be disabled
+                          rule: (self || !oldSelf)
+                    required:
+                    - enabled
+                    type: object
                   monitoring:
                     description: Enable Service monitors for ctlog
                     properties:
@@ -357,6 +374,23 @@ spec:
                       host:
                         description: Set hostname for your Ingress/Route.
                         type: string
+                    required:
+                    - enabled
+                    type: object
+                  externalCtlog:
+                    description: Define whether you want to use external CTlog service
+                    properties:
+                      ctlogUrl:
+                        description: Set the external Ctlog.
+                        type: string
+                      enabled:
+                        default: false
+                        description: If set to true, the Operator will use external
+                          CTlog service for fulcio.
+                        type: boolean
+                        x-kubernetes-validations:
+                        - message: Feature cannot be disabled
+                          rule: (self || !oldSelf)
                     required:
                     - enabled
                     type: object
